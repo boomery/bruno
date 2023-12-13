@@ -18,7 +18,7 @@ dependencies:
   photo_view:
     git:
       url: https://github.com/boomery/photo_view.git
-      ref: newParam
+      ref: v1.0.0
   bindings_compatible: ^1.0.1
 
 dev_dependencies:
