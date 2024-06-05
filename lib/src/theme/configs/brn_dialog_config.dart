@@ -31,6 +31,7 @@ class BrnDialogConfig extends BrnBaseConfig {
     double? bottomHeight,
     Color? backgroundColor,
     String configId = GLOBAL_CONFIG_ID,
+    bool? actionAuto,
   })  : _dialogWidth = dialogWidth,
         _radius = radius,
         _iconPadding = iconPadding,
@@ -53,11 +54,16 @@ class BrnDialogConfig extends BrnBaseConfig {
         _assistActionsBackgroundColor = assistActionsBackgroundColor,
         _bottomHeight = bottomHeight,
         _backgroundColor = backgroundColor,
+        _actionAuto=actionAuto,
         super(configId: configId);
 
   /// Dialog 宽度
   /// 默认为 300
   double? _dialogWidth;
+  
+  bool? _actionAuto;//按钮是否开启自动位置优化
+
+  bool? get actionAuto => _actionAuto??true;
 
   double get dialogWidth =>
       _dialogWidth ?? BrnDefaultConfigUtils.defaultDialogConfig.dialogWidth;
@@ -385,6 +391,7 @@ class BrnDialogConfig extends BrnBaseConfig {
     _bottomHeight ??= dialogConfig.bottomHeight;
     _dividerPadding ??= dialogConfig.dividerPadding;
     _backgroundColor ??= commonConfig.fillBase;
+    _actionAuto ?? dialogConfig.actionAuto;
   }
 
   BrnDialogConfig copyWith({
@@ -410,6 +417,7 @@ class BrnDialogConfig extends BrnBaseConfig {
     Color? assistActionsBackgroundColor,
     double? bottomHeight,
     Color? backgroundColor,
+    bool? actionAuto,
   }) {
     return BrnDialogConfig(
       dialogWidth: dialogWidth ?? _dialogWidth,
@@ -436,6 +444,7 @@ class BrnDialogConfig extends BrnBaseConfig {
           assistActionsBackgroundColor ?? _assistActionsBackgroundColor,
       bottomHeight: bottomHeight ?? _bottomHeight,
       backgroundColor: backgroundColor ?? _backgroundColor,
+        actionAuto:actionAuto ?? _actionAuto,
     );
   }
 
@@ -466,6 +475,7 @@ class BrnDialogConfig extends BrnBaseConfig {
       assistActionsBackgroundColor: other._assistActionsBackgroundColor,
       bottomHeight: other._bottomHeight,
       backgroundColor: other._backgroundColor,
+        actionAuto:other._actionAuto,
     );
   }
 }
