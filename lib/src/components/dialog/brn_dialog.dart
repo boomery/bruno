@@ -122,6 +122,7 @@ enum _ButtonType {
 ///    });
 ///  }
 ///
+
 class BrnDialog extends AlertDialog {
   /// 标题控件
   final Widget? titleWidget;
@@ -421,45 +422,9 @@ class BrnDialog extends AlertDialog {
       BuildContext context, BrnDialogConfig defaultConfig) {
     bool showTextActions = _isEmptyActionsWidget();
     int length = showTextActions ? actionsText!.length : actionsWidget!.length;
-    if (length == 1) {
-      return showTextActions
-          ? _mapTextToGesWidget(
-              context,
-              actionsText![0],
-              0,
-              true,
-              defaultConfig,
-              type: _ButtonType.single,
-            )
-          : actionsWidget![0];
-    } else if (length == 2) {
-      return Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            child: showTextActions
-                ? _mapTextToGesWidget(
-                    context, actionsText![0], 0, false, defaultConfig,
-                    type: _ButtonType.left)
-                : actionsWidget![0],
-          ),
-          Container(
-            height: defaultConfig.bottomHeight,
-            child: verticalDivider,
-          ),
-          Expanded(
-            child: showTextActions
-                ? _mapTextToGesWidget(
-                    context, actionsText![1], 1, true, defaultConfig,
-                    type: _ButtonType.right)
-                : actionsWidget![1],
-          )
-        ],
-      );
-    } else {
+    if(defaultConfig.actionAuto==false){
       return Container(
-        height: 3 * (defaultConfig.bottomHeight + 1),
+        height: (length>3?3:length) * (defaultConfig.bottomHeight + 1),
         width: double.maxFinite,
         child: ListView.separated(
             shrinkWrap: true,
@@ -467,8 +432,8 @@ class BrnDialog extends AlertDialog {
             itemBuilder: (context, i) {
               return showTextActions
                   ? _mapTextToGesWidget(
-                      context, actionsText![i], i, true, defaultConfig,
-                      type: _ButtonType.multi)
+                  context, actionsText![i], i, true, defaultConfig,
+                  type: _ButtonType.multi)
                   : actionsWidget![i];
             },
             separatorBuilder: (context, i) {
@@ -476,7 +441,65 @@ class BrnDialog extends AlertDialog {
             },
             itemCount: length),
       );
+    }else{
+      if (length == 1) {
+        return showTextActions
+            ? _mapTextToGesWidget(
+                context,
+                actionsText![0],
+                0,
+                true,
+                defaultConfig,
+                type: _ButtonType.single,
+              )
+            : actionsWidget![0];
+      } else if (length == 2) {
+        return Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: showTextActions
+                  ? _mapTextToGesWidget(
+                      context, actionsText![0], 0, false, defaultConfig,
+                      type: _ButtonType.left)
+                  : actionsWidget![0],
+            ),
+            Container(
+              height: defaultConfig.bottomHeight,
+              child: verticalDivider,
+            ),
+            Expanded(
+              child: showTextActions
+                  ? _mapTextToGesWidget(
+                      context, actionsText![1], 1, true, defaultConfig,
+                      type: _ButtonType.right)
+                  : actionsWidget![1],
+            )
+          ],
+        );
+      } else {
+        return Container(
+          height: 3 * (defaultConfig.bottomHeight + 1),
+          width: double.maxFinite,
+          child: ListView.separated(
+              shrinkWrap: true,
+              physics: length > 3 ? null : NeverScrollableScrollPhysics(),
+              itemBuilder: (context, i) {
+                return showTextActions
+                    ? _mapTextToGesWidget(
+                        context, actionsText![i], i, true, defaultConfig,
+                        type: _ButtonType.multi)
+                    : actionsWidget![i];
+              },
+              separatorBuilder: (context, i) {
+                return divider;
+              },
+              itemCount: length),
+        );
+      }
     }
+
   }
 
   Widget _mapTextToGesWidget(BuildContext context, String label, int index,
